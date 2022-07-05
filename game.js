@@ -10,15 +10,15 @@ var text;
 var winningMessage;
 var won = false;
 var currentScore = 0;
-var winningScore = 10;
+var winningScore = 95;
 
 // add collectable items to the game
 function addItems() {
   items = game.add.physicsGroup();
-  createItem(375, 300, "coin");
+  createItem(375, 300, "poison");
   createItem(500, 500, "coin");
   createItem(200, 200, "coin");
-  createItem(100, 100, "coin");
+  createItem(100, 100, "star");
   createItem(250, 400, "coin");
   createItem(550, 100, "coin");
   createItem(625, 325, "coin");
@@ -29,15 +29,15 @@ function addItems() {
 // add platforms to the game
 function addPlatforms() {
   platforms = game.add.physicsGroup();
-  platforms.create(450, 150, "platform");
-  platforms.create(300, 350, "platform");
-  platforms.create(550, 375, "platform");
-  platforms.create(50, 350, "platform");
+  platforms.create(450, 175, "platform");
+  platforms.create(300, 350, "platform2");
+  platforms.create(500, 375, "platform");
+  platforms.create(20, 350, "platform2");
   platforms.create(150, 450, "platform");
-  platforms.create(450, 550, "platform");
-  platforms.create(150, 250, "platform");
+  platforms.create(400, 550, "platform");
+  platforms.create(150, 250, "platform2");
   platforms.create(40, 150, "platform");
-  platforms.create(225, 100, "platform");
+  platforms.create(225, 100, "platform2");
   platforms.setAll("body.immovable", true);
 }
 
@@ -56,10 +56,21 @@ function createBadge() {
   badge.animations.play("spin", 10, true);
 }
 
+
 // when the player collects an item on the screen
 function itemHandler(player, item) {
   item.kill();
-  currentScore = currentScore + 10;
+  console.log(item.key)
+    if(item.key == "coin"){
+      currentScore = currentScore + 10;
+    }
+    if(item.key == "poison"){
+    currentScore = currentScore - 25;
+    }
+    if(item.key == "star"){
+      currentScore = currentScore + 25;
+    }
+
   if (currentScore === winningScore) {
     createBadge();
   }
@@ -86,11 +97,14 @@ window.onload = function () {
 
     //Load images
     game.load.image("platform", "assets/platform_1.png");
+    game.load.image("platform2", "assets/platform_2.png");
 
     //Load spritesheets
-    game.load.spritesheet("player", "assets/chalkers.png", 48, 62);
+    game.load.spritesheet("player", "assets/poketrainer.png", 64, 61);
     game.load.spritesheet("coin", "assets/coin.png", 36, 44);
     game.load.spritesheet("badge", "assets/badge.png", 42, 54);
+    game.load.spritesheet("poison", "assets/poison.png", 32, 32);
+    game.load.spritesheet("star", "assets/star.png", 32, 32);
   }
 
   // initial game set up
@@ -100,7 +114,7 @@ window.onload = function () {
     player.anchor.setTo(0.5, 1);
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
-    player.body.gravity.y = 500;
+    player.body.gravity.y = 600;
 
     addItems();
     addPlatforms();
